@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure System Call Interface</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Secure System Call Interface</h1>
+            <p>Enhanced security with authentication and detailed logging</p>
+        </header>
+
+        <div class="main-content">
+            <div class="auth-panel">
+                <h2><i class="fas fa-lock"></i> Authentication</h2>
+
+                <div id="login-form" class="panel-content">
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" placeholder="Enter username">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" placeholder="Enter password">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="security-level">Security Level:</label>
+                        <select id="security-level">
+                            <option value="user">User (Limited Access)</option>
+                            <option value="admin">Administrator (Full Access)</option>
+                            <option value="guest">Guest (View Only)</option>
+                        </select>
+                    </div>
+
+                    <button id="login-btn" class="btn btn-primary">
+                        <i class="fas fa-sign-in-alt"></i> Authenticate
+                    </button>
+                </div>
+
+                <div id="user-info" class="panel-content" style="display: none;">
+                    <div class="user-profile">
+                        <i class="fas fa-user-circle user-avatar"></i>
+                        <div class="user-details">
+                            <h3 id="user-display-name">Not Logged In</h3>
+                            <span id="user-security-level" class="badge">No Access</span>
+                        </div>
+                    </div>
+                    <button id="logout-btn" class="btn btn-secondary">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+
+            <div class="syscall-interface" id="syscall-interface">
+                <h2><i class="fas fa-terminal"></i> System Call Interface</h2>
+
+                <div class="alert alert-warning" id="auth-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>Authentication required to use system calls</span>
+                </div>
+
+                <div class="syscall-container" id="syscall-container" style="display: none;">
+                    <div class="syscall-selector">
+                        <h3>Available System Calls</h3>
+                        <div class="form-group">
+                            <label for="syscall-category">Category:</label>
+                            <select id="syscall-category">
+                                <option value="file">File Operations</option>
+                                <option value="process">Process Management</option>
+                                <option value="memory">Memory Management</option>
+                                <option value="network">Network Operations</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="syscall-select">System Call:</label>
+                            <select id="syscall-select">
+                                <option value="">Select a system call...</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="syscall-parameters" id="syscall-parameters">
+                        <h3>Parameters</h3>
+                        <div class="parameters-container" id="parameters-form">
+                            <div class="placeholder-text">Select a system call to view parameters</div>
+                        </div>
+                    </div>
+
+                    <div class="syscall-execution">
+                        <button id="execute-btn" class="btn btn-primary">
+                            <i class="fas fa-play-circle"></i> Execute System Call
+                        </button>
+                        <div class="security-check">
+                            <input type="checkbox" id="confirm-execution">
+                            <label for="confirm-execution">I confirm this operation is authorized</label>
+                        </div>
+                    </div>
+
+                    <div class="syscall-result" id="syscall-result">
+                        <h3>Result</h3>
+                        <div class="result-container">
+                            <pre id="result-output">No results to display</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="logging-panel">
+                <h2><i class="fas fa-shield-alt"></i> Security Logs</h2>
+
+                <div class="panel-controls">
+                    <button id="clear-logs-btn" class="btn btn-small">
+                        <i class="fas fa-trash"></i> Clear
+                    </button>
+                    <button id="export-logs-btn" class="btn btn-small">
+                        <i class="fas fa-download"></i> Export
+                    </button>
+                    <div class="search-logs">
+                        <input type="text" id="search-logs" placeholder="Search logs...">
+                        <i class="fas fa-search search-icon"></i>
+                    </div>
+                </div>
+
+                <div class="logs-container">
+                    <div class="log-filters">
+                        <button class="log-filter active" data-filter="all">All</button>
+                        <button class="log-filter" data-filter="auth">Auth</button>
+                        <button class="log-filter" data-filter="syscall">System Calls</button>
+                        <button class="log-filter" data-filter="error">Errors</button>
+                    </div>
+
+                    <ul id="security-logs" class="security-logs">
+                        <li class="log-entry system">
+                            <span class="timestamp">2023-05-15 08:00:00</span>
+                            <span class="log-type system">SYSTEM</span>
+                            <span class="log-message">System initialized. Waiting for authentication.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+<!-- related to security -->
+        <div class="security-dashboard">
+            <h2><i class="fas fa-tachometer-alt"></i> Security Dashboard</h2>
+
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <h3>Authentication Status</h3>
+                    <div class="status-indicator" id="auth-status-indicator">
+                        <div class="status-circle unauthorized"></div>
+                        <span class="status-text">Unauthorized</span>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <h3>System Call Activity</h3>
+                    <div class="metric-value" id="syscall-count">0</div>
+                    <div class="metric-label">calls executed</div>
+                </div>
+
+                <div class="dashboard-card">
+                    <h3>Security Incidents</h3>
+                    <div class="metric-value" id="security-incidents">0</div>
+                    <div class="metric-label">detected</div>
+                </div>
+
+                <div class="dashboard-card">
+                    <h3>Access Level</h3>
+                    <div class="access-level-indicator">
+                        <div class="access-bar">
+                            <div class="access-progress" id="access-level-bar"></div>
+                        </div>
+                        <span class="access-text" id="access-level-text">No Access</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- System call with documentation -->
+    <div id="syscall-docs-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">System Call Documentation</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body" id="modal-body">
+                
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
